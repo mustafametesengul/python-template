@@ -15,3 +15,8 @@ services:
         - GROUP_ID=${GROUP_ID:?}
         - HOME_DIRECTORY=${HOME_DIRECTORY:?}
         - PYTHON_VERSION=${PYTHON_VERSION:?}
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - capabilities: [gpu]
