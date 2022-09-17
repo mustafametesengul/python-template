@@ -1,0 +1,17 @@
+version: "3.9"
+name: python-template
+services:
+  python-template:
+    image: python-template
+    container_name: python-template
+    stdin_open: true
+    tty: true
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+      args:
+        - USER_NAME=${USER_NAME:-user}
+        - USER_ID=${USER_ID:-1000}
+        - GROUP_ID=${GROUP_ID:-1000}
+        - HOME_DIRECTORY=${HOME_DIRECTORY:-/home/user}
+        - PYTHON_VERSION=${PYTHON_VERSION:-3.10}
