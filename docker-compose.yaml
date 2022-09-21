@@ -15,3 +15,9 @@ services:
         - GROUP_ID=${GROUP_ID:-1000}
         - HOME_DIRECTORY=${HOME_DIRECTORY:-/home/user}
         - PYTHON_VERSION=${PYTHON_VERSION:-3.10}
+      ssh:
+        - default
+    volumes:
+      - type: bind
+        source: ~/.ssh
+        target: ${HOME_DIRECTORY:?}/.ssh
