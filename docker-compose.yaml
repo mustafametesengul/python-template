@@ -10,14 +10,8 @@ services:
       context: .
       dockerfile: ./Dockerfile
       args:
-        - USER_NAME=${USER_NAME:?}
-        - USER_ID=${USER_ID:?}
-        - GROUP_ID=${GROUP_ID:?}
-        - HOME_DIRECTORY=${HOME_DIRECTORY:?}
-        - PYTHON_VERSION=${PYTHON_VERSION:?}
-      ssh:
-        - default
-    volumes:
-      - type: bind
-        source: ~/.ssh
-        target: ${HOME_DIRECTORY:?}/.ssh
+        - USER_NAME=${USER_NAME:-user}
+        - USER_ID=${USER_ID:-1000}
+        - GROUP_ID=${GROUP_ID:-1000}
+        - HOME_DIRECTORY=${HOME_DIRECTORY:-/home/user}
+        - PYTHON_VERSION=${PYTHON_VERSION:-3.10}

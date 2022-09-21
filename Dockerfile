@@ -1,10 +1,6 @@
 FROM ubuntu:20.04
 
-ARG USER_NAME
-ARG USER_ID
-ARG GROUP_ID
-ARG HOME_DIRECTORY
-ARG PYTHON_VERSION
+ARG PYTHON_VERSION=3.10
 
 ENV DEBIAN_FRONTEND="noninteractive" TZ="Etc/UTC"
 COPY system.txt .
@@ -21,14 +17,29 @@ RUN apt update && \
     xargs apt install -y < system.txt
 RUN rm system.txt
 
-RUN addgroup --gid $GROUP_ID $USER_NAME; exit 0
-RUN adduser \
-    --home $HOME_DIRECTORY \
-    --disabled-password \
-    --gecos "" \
-    --uid $USER_ID \
-    --gid $GROUP_ID \
-    $USER_NAME; exit 0
+ARG USER_NAME=user
+ARG USER_ID=1000
+ARG GROUP_ID=1000
+ARG HOME_DIRECTORY=/home/user
+
+RUN if \
+        [ "$USER_NAME" != "root" ] || \
+        [ "$USER_ID" != "0" ] || \
+        [ "$GROUP_ID" != "0" ] || \
+        [ "$HOME_DIRECTORY" != "/root" ]; \
+    then \
+        addgroup \
+            --gid $GROUP_ID \
+            $USER_NAME && \
+        adduser \
+            --home $HOME_DIRECTORY \
+            --disabled-password \
+            --gecos "" \
+            --uid $USER_ID \
+            --gid $GROUP_ID \
+            $USER_NAME; \
+    fi
+
 USER $USER_NAME
 WORKDIR $HOME_DIRECTORY
 
