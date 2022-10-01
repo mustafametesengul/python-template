@@ -10,11 +10,16 @@ services:
       context: .
       dockerfile: ./Dockerfile
       args:
+        - PYTHON_VERSION=${PYTHON_VERSION:-3.10}
         - USER_NAME=${USER_NAME:-user}
         - USER_ID=${USER_ID:-1000}
         - GROUP_ID=${GROUP_ID:-1000}
         - HOME_DIRECTORY=${HOME_DIRECTORY:-/home/user}
         - PYTHON_VERSION=${PYTHON_VERSION:-3.10}
+    volumes:
+      - type: bind
+        source: ..
+        target: /projects
     deploy:
       resources:
         reservations:
