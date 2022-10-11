@@ -23,4 +23,4 @@ services:
         target: /projects
       - type: bind
         source: ~/.ssh
-        target: ${HOME_DIRECTORY:?}/.ssh
+        target: ${HOME_DIRECTORY:-/home/user}/.ssh
