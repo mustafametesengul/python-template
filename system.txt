@@ -1,0 +1,7 @@
+zlib1g-dev
+libjpeg8-dev
+ffmpeg
+libsm6
+libxext6
+git
+git-lfs
