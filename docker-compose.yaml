@@ -1,0 +1,11 @@
+version: "3.9"
+name: python3-template
+services:
+  python3-template:
+    image: python3-template
+    container_name: python3-template
+    stdin_open: true
+    tty: true
+    build:
+      context: .
+      dockerfile: ./Dockerfile
