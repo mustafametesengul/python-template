@@ -1,6 +1,11 @@
-ARG ROOT=0
+ARG USE_ROOT=false
+ARG USE_CUDA=false
 
-FROM ubuntu:22.04 as base
+FROM ubuntu:22.04 AS cuda-false
+
+FROM nvidia/cuda:11.7.1-cudnn8-runtime-ubuntu22.04 AS cuda-true
+
+FROM cuda-$USE_CUDA AS base
 
 ENV DEBIAN_FRONTEND=noninteractive
 ENV TZ=Etc/UTC
@@ -18,7 +23,7 @@ RUN apt update \
     && rm -rf /var/lib/apt/lists/* \
     && rm system.txt
 
-FROM base AS root-0
+FROM base AS root-false
 
 ARG USER_ID=1000
 ARG GROUP_ID=$USER_ID
@@ -41,12 +46,12 @@ RUN groupadd \
         --create-home \
         $USER_NAME
 
-FROM base AS root-1
+FROM base AS root-true
 
 ENV USER_NAME=root
 ENV HOME_DIR=/root
 
-FROM root-$ROOT AS final
+FROM root-$USE_ROOT AS final
 
 ARG VENV_DIR=$HOME_DIR/.virtualenvs/venv
 
