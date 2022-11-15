@@ -10,15 +10,19 @@ services:
       context: .
       dockerfile: ./Dockerfile
       args:
-        - ROOT=${ROOT:-0}
+        - USE_CUDA=${USE_CUDA:-false}
+        - USE_ROOT=${USE_ROOT:-false}
         - USER_ID=${USER_ID:-1000}
         - GROUP_ID=${GROUP_ID:-1000}
-        - USER_NAME=${USER_NAME:-user}
-        - GROUP_NAME=${GROUP_NAME:-user}
-        - HOME_DIR=${HOME_DIR:-/home/user}
-        - SHELL=${SHELL:-/bin/bash}
-        - VENV_DIR=${VENV_DIR:-/home/user/.virtualenvs/venv}
     volumes:
       - type: bind
         source: ..
         target: /projects
+      - type: bind
+        source: ~/.ssh
+        target: /home/user/.ssh
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - capabilities: [gpu]
