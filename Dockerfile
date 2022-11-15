@@ -2,8 +2,8 @@ ARG ROOT=0
 
 FROM ubuntu:22.04 as base
 
-ENV DEBIAN_FRONTEND=noninteractive \
-    TZ=Etc/UTC
+ENV DEBIAN_FRONTEND=noninteractive
+ENV TZ=Etc/UTC
 
 COPY system.txt .
 
@@ -20,15 +20,15 @@ RUN apt update \
 
 FROM base AS root-0
 
-ARG USER_ID=1000 \
-    GROUP_ID=$USER_ID \
-    USER_NAME=user \
-    GROUP_NAME=$USER_NAME\
-    HOME_DIR=/home/$USER_NAME \
-    SHELL=/bin/bash
+ARG USER_ID=1000
+ARG GROUP_ID=$USER_ID
+ARG USER_NAME=user
+ARG GROUP_NAME=$USER_NAME
+ARG HOME_DIR=/home/$USER_NAME
+ARG SHELL=/bin/bash
 
-ENV USER_NAME=$USER_NAME \
-    HOME_DIR=$HOME_DIR
+ENV USER_NAME=$USER_NAME
+ENV HOME_DIR=$HOME_DIR
 
 RUN groupadd \
         --gid $GROUP_ID \
@@ -43,19 +43,18 @@ RUN groupadd \
 
 FROM base AS root-1
 
-ENV USER_NAME=root \
-    HOME_DIR=/root
+ENV USER_NAME=root
+ENV HOME_DIR=/root
 
 FROM root-$ROOT AS final
 
 ARG VENV_DIR=$HOME_DIR/.virtualenvs/venv
 
-ENV PYTHON_DIR=$VENV_DIR/lib/python3.10 \
-    SITE_DIR=$PYTHON_DIR/site-packages \
-    PATH=$VENV_DIR/bin:$PATH
+ENV PYTHON_DIR=$VENV_DIR/lib/python3.10
+ENV SITE_DIR=$PYTHON_DIR/site-packages
+ENV PATH=$VENV_DIR/bin:$PATH
 
 USER $USER_NAME
-
 WORKDIR $HOME_DIR
 
 COPY requirements.txt .
